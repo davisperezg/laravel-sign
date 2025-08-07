@@ -43,7 +43,6 @@ class SignController extends Controller {
 
         $cdr = $result->getCdrResponse();
         //file_put_contents('R-'.$fileName.'.zip', $result->getCdrZip());
-        
         // Verificar CDR (Factura aceptada o rechazada)
         $res_code = (int) $cdr->getCode();
         $res_estado = "";
@@ -68,19 +67,20 @@ class SignController extends Controller {
             /* code: 0100 a 1999 */
             echo 'Excepción';
             $res_estado = 'Excepción';
-        }        
-        
+        }
+
         $json = array(
-                "codigo_sunat" => $res_code,
-                    "estado_sunat" => $res_estado,
-                    "mensaje_sunat" => $cdr->getDescription(),
-                    "observaciones_sunat" => $res_obs,
-                    "cdrZip" => base64_encode($result->getCdrZip())
+            "codigo_sunat" => $res_code,
+            "estado_sunat" => $res_estado,
+            "mensaje_sunat" => $cdr->getDescription(),
+            "observaciones_sunat" => $res_obs,
+            "cdrZip" => base64_encode($result->getCdrZip())
         );
-          
-        echo json_encode($json, JSON_UNESCAPED_UNICODE);exit;
-                $decoded = json_decode();
-$formatted_json = json_encode($decoded, JSON_PRETTY_PRINT);
+
+        echo json_encode($json, JSON_UNESCAPED_UNICODE);
+        exit;
+        $decoded = json_decode();
+        $formatted_json = json_encode($decoded, JSON_PRETTY_PRINT);
         //echo $cdr->getDescription().PHP_EOL;
         return response()->json($formatted_json);
     }
@@ -101,49 +101,51 @@ $formatted_json = json_encode($decoded, JSON_PRETTY_PRINT);
     }
 
     public function test() {
-        $urlService = 'https://e-beta.sunat.gob.pe/ol-ti-itcpfegem-beta/billService';
-        $soap = new SoapClient();
-        $soap->setService($urlService);
-        $soap->setCredentials('20000000001MODDATOS', 'moddatos');
-        $sender = new BillSender();
-        $sender->setClient($soap);
-
-        $xml = file_get_contents('C:/Users/keiner/Proyectos/factv2/backend-adm-rpum/20123456789-01-F001-1.xml');
-        $result = $sender->send('20123456789-01-F001-1', $xml);
-
-        if (!$result->isSuccess()) {
-            // Error en la conexion con el servicio de SUNAT
-            var_dump($result->getError());
-            return;
-        }
-
-        $cdr = $result->getCdrResponse();
-        file_put_contents('R-10481211641-03-B001-8.zip', $result->getCdrZip());
-
-        // Verificar CDR (Factura aceptada o rechazada)
-        $code = (int) $cdr->getCode();
-
-        if ($code === 0) {
-            echo 'ESTADO: ACEPTADA' . PHP_EOL;
-            if (count($cdr->getNotes()) > 0) {
-                echo 'INCLUYE OBSERVACIONES:' . PHP_EOL;
-                // Mostrar observaciones
-                foreach ($cdr->getNotes() as $obs) {
-                    echo 'OBS: ' . $obs . PHP_EOL;
-                }
-            }
-        } else if ($code >= 2000 && $code <= 3999) {
-            echo 'ESTADO: RECHAZADA' . PHP_EOL;
-        } else {
-            /* Esto no debería darse, pero si ocurre, es un CDR inválido que debería tratarse como un error-excepción. */
-            /* code: 0100 a 1999 */
-            echo 'Excepción';
-        }
-
-        echo $cdr->getDescription() . PHP_EOL;
-        exit;
-        $getXML = file_get_contents("C:/Users/keiner/Proyectos/php/api/utils/xml/10481211641-03-B001-8.xml", false);
-        return response($getXML, 200, [
+//        $urlService = 'https://e-beta.sunat.gob.pe/ol-ti-itcpfegem-beta/billService';
+//        $soap = new SoapClient();
+//        $soap->setService($urlService);
+//        $soap->setCredentials('20000000001MODDATOS', 'moddatos');
+//        $sender = new BillSender();
+//        $sender->setClient($soap);
+//
+//        $xml = file_get_contents('C:/Users/keiner/Proyectos/factv2/backend-adm-rpum/20123456789-01-F001-1.xml');
+//        $result = $sender->send('20123456789-01-F001-1', $xml);
+//
+//        if (!$result->isSuccess()) {
+//            // Error en la conexion con el servicio de SUNAT
+//            var_dump($result->getError());
+//            return;
+//        }
+//
+//        $cdr = $result->getCdrResponse();
+//        file_put_contents('R-10481211641-03-B001-8.zip', $result->getCdrZip());
+//
+//        // Verificar CDR (Factura aceptada o rechazada)
+//        $code = (int) $cdr->getCode();
+//
+//        if ($code === 0) {
+//            echo 'ESTADO: ACEPTADA' . PHP_EOL;
+//            if (count($cdr->getNotes()) > 0) {
+//                echo 'INCLUYE OBSERVACIONES:' . PHP_EOL;
+//                // Mostrar observaciones
+//                foreach ($cdr->getNotes() as $obs) {
+//                    echo 'OBS: ' . $obs . PHP_EOL;
+//                }
+//            }
+//        } else if ($code >= 2000 && $code <= 3999) {
+//            echo 'ESTADO: RECHAZADA' . PHP_EOL;
+//        } else {
+//            /* Esto no debería darse, pero si ocurre, es un CDR inválido que debería tratarse como un error-excepción. */
+//            /* code: 0100 a 1999 */
+//            echo 'Excepción';
+//        }
+//
+//        echo $cdr->getDescription() . PHP_EOL;
+//        exit;
+        //$getXML = file_get_contents("C:/Users/keiner/Proyectos/php/api/utils/xml/10481211641-03-B001-8.xml", false);
+        return response([
+            "codigo_sunat" => "codigo_sunat",
+                ], 200, [
             'Content-Type' => 'Content-Type: text/xml; charset=ISO-8859-1'
         ]);
     }
