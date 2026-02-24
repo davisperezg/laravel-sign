@@ -17,6 +17,9 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www
 COPY . .
 
+# Crear .env si no existe
+RUN cp -n .env.example .env || true
+
 # Instalar dependencias PHP
 RUN composer install --no-dev --optimize-autoloader
 
