@@ -14,5 +14,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    echo 'Versión de PHP: ' . phpversion();
     echo 'API cert funcionando correctamente!';
 });

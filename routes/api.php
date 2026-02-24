@@ -18,7 +18,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get("/sign", "App\Http\Controllers\SignController@test");
-Route::get("/firm", "App\Http\Controllers\SignController@signXML");
-Route::post("/sign", "App\Http\Controllers\SignController@signXML");
-Route::post("/sign/sendSunat", "App\Http\Controllers\SignController@sendSunat");
+Route::middleware('json')->post("/v1/invoice/generate-xml", "App\Http\Controllers\InvoiceController@createXml");
+Route::post("/v1/invoice/send-xml", "App\Http\Controllers\InvoiceController@sendXml");
+//Route::post("/api/v1", "App\Http\Controllers\SignController@signXML");
+//Route::post("/sign/sendSunat", "App\Http\Controllers\SignController@sendSunat");
