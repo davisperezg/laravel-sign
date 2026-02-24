@@ -2,58 +2,35 @@
 
 namespace App\DTOs\Invoice;
 
-use DateMalformedStringException;
+use App\DTOs\Client\ClientData;
+use App\DTOs\Company\CompanyData;
+use App\Enums\FormaPagoType;
 use DateTime;
 
 readonly class InvoiceData
 {
+    /**
+     * @param InvoiceDetailData[] $details
+     * @param string[]|null $observations
+     * @param LegendData[] $legends
+     */
     public function __construct(
-        public string $ublVersion,
-        public ?DateTime $fechaVencimiento,
-        public string $tipoOperacion,
-        public string $tipoDoc,
+        public ClientData $client,
+        public CompanyData $company,
+        public string $ubl_version,
+        public ?DateTime $fecha_vencimiento,
+        public string $tipo_operacion,
+        public string $tipo_doc,
         public string $serie,
         public string $correlativo,
-        public DateTime $fechaEmision,
-        public string $formaPago,
-        public string $tipoMoneda,
+        public DateTime $fecha_emision,
+        public string $forma_pago,
+        public string $tipo_moneda,
         public InvoiceMontosData $montos,
-        /** @var InvoiceDetailData[] */
         public array $details,
-        /** @var ObservationData[] */
-        public array $observations,
-        /** @var LegendData[] */
+        /** @var string[] */
+        public ?array $observations,
         public array $legends
-    ) {}
-
-    /**
-     * @throws DateMalformedStringException
-     */
-    public static function from(array $data): self
-    {
-        return new self(
-            ublVersion: $data['ubl_version'],
-            fechaVencimiento: $data['fecha_vencimiento'] ? new DateTime($data['fecha_vencimiento']) : null,
-            tipoOperacion: $data['tipo_operacion'],
-            tipoDoc: $data['tipo_doc'],
-            serie: $data['serie'],
-            correlativo: $data['correlativo'],
-            fechaEmision: new DateTime($data["fecha_emision"]),
-            formaPago: $data['forma_pago'],
-            tipoMoneda: $data['tipo_moneda'],
-            montos: InvoiceMontosData::from($data['montos']),
-            details: array_map(
-                fn(array $detail): InvoiceDetailData => InvoiceDetailData::from($detail),
-                $data['details'] ?? []
-            ),
-            observations: array_map(
-                fn(string $observation): ObservationData => ObservationData::from($observation),
-                $data['observations'] ?? []
-            ),
-            legends: array_map(
-                fn(array $legend): LegendData => LegendData::from($legend),
-                $data['legends'] ?? []
-            )
-        );
+    ) {
     }
 }

@@ -17,8 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-// Observations
-Route::post("/v1/invoice/generate-xml", "App\Http\Controllers\InvoiceController@createXML");
-//Route::get("/firm", "App\Http\Controllers\SignController@signXML");
+
+Route::middleware('json')->post("/v1/invoice/generate-xml", "App\Http\Controllers\InvoiceController@createXml");
+Route::post("/v1/invoice/send-xml", "App\Http\Controllers\InvoiceController@sendXml");
 //Route::post("/api/v1", "App\Http\Controllers\SignController@signXML");
 //Route::post("/sign/sendSunat", "App\Http\Controllers\SignController@sendSunat");
