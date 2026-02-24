@@ -23,6 +23,9 @@ RUN cp -n .env.example .env || true
 # Instalar dependencias PHP
 RUN composer install --no-dev --optimize-autoloader
 
+# Generar APP_KEY
+RUN php artisan key:generate --force
+
 # Permisos
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
     && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
